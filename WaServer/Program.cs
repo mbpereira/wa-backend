@@ -21,7 +21,6 @@ namespace WaServer
             return Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseUrls("http://localhost:5003", "http://localhost:5004", "http://0.0.0.0:5005");
                     webBuilder.UseStartup<Startup>();
                 });
         }
