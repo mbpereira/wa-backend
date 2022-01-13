@@ -13,9 +13,9 @@ namespace WaServer.Controllers
     public class OrdersController : BaseController
     {
         private readonly SimpleEcommerceContext _context;
-        private readonly IBasicRepository<Order> _orders;
+        private readonly IOrdersRepository _orders;
 
-        public OrdersController(SimpleEcommerceContext context, IBasicRepository<Order> orders)
+        public OrdersController(SimpleEcommerceContext context, IOrdersRepository orders)
         {
             _context = context;
             _orders = orders;
@@ -36,12 +36,15 @@ namespace WaServer.Controllers
             }
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] int? page = 1)
+        public async Task<IActionResult> Get([FromQuery] int? page = null, [FromQuery] DateTime? from = null, [FromQuery] DateTime? to = null)
         {
             try
             {
-                return Ok(await _orders.GetAll(page.GetSkip(), page.GetTake()));
+                if (page.HasValue)
+                    return Ok(await _orders.GetAll(page.GetSkip(), page.GetTake()));
+                return Ok(await _orders.GetByInterval(from.GetValueOrDefault(), to.GetValueOrDefault()));
             }
             catch (Exception ex)
             {

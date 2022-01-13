@@ -8,7 +8,7 @@ using WaServer.Data.Repositories.Contracts;
 
 namespace WaServer.Data.Repositories
 {
-    public class OrdersRepository : IBasicRepository<Order>
+    public class OrdersRepository : IOrdersRepository
     {
         private readonly SimpleEcommerceContext _context;
 
@@ -43,6 +43,15 @@ namespace WaServer.Data.Repositories
             if (take.HasValue) query = query.Take(take.Value);
 
             return await query.ToListAsync();
+        }
+
+        public async Task<IList<Order>> GetByInterval(DateTime from, DateTime to)
+        {
+            return await _context.Orders
+                    .Include(o => o.Items)
+                    .Include(o => o.DeliveryTeam)
+                    .OrderByDescending(o => o.CreatedAt)
+                    .ToListAsync();
         }
 
         public Task Remove(Order data)

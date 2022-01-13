@@ -31,7 +31,7 @@ namespace WaServer
         {
             services.AddDbContext<SimpleEcommerceContext>(builder => 
                 builder.UseNpgsql(Configuration.GetConnectionString("SimpleEcommerceContext")));
-            services.AddScoped<IBasicRepository<Order>, OrdersRepository>();
+            services.AddScoped<IOrdersRepository, OrdersRepository>();
             services.AddScoped<IBasicRepository<OrderItem>, OrderItemsRepository>();
             services.AddScoped<IBasicRepository<DeliveryTeam>, DeliveryTeamsRepository>();
             services.AddScoped<IAuthenticationService, Authenticator>();
